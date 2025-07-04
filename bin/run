@@ -1,0 +1,130 @@
+#!/bin/bash
+
+
+_install_deps() {
+  apt install -y ffmpeg
+  uv sync
+  uv run pre-commit install
+}
+
+_with_dev_env() {
+  eval "$(./bin/env --overload -e .env.dev -e .env.dev.local)"
+}
+
+_with_test_env() {
+  eval "$(./bin/env --overload -e .env.test -e .env.test.local)"
+}
+
+run_test() {
+  _with_test_env
+  uv run test "${@}"
+}
+
+run_update.lock() {
+  uv lock && _install_deps
+}
+
+run_dev.reset() {
+  rm -Rf .venv
+
+  _install_deps
+}
+
+run_deps() {
+  _install_deps
+}
+
+run_uv_dev() {
+  _with_dev_env
+  uv run $1
+}
+
+run_remote.setup() {
+  sudo apt update
+  sudo apt install -y vim
+  sudo apt install -y htop
+  sudo apt install -y unzip
+  sudo apt install -y libgl1
+  sudo apt install -y byobu
+  sudo byobu-disable
+  git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.13.1    
+  echo '. "$HOME/.asdf/asdf.sh"' >> ~/.bashrc
+  echo '. "$HOME/.asdf/completions/asdf.bash"' >> ~/.bashrc
+  . "$HOME/.asdf/asdf.sh"
+  asdf plugin-add python
+  sudo apt install -y build-essential libssl-dev zlib1g-dev \
+  libbz2-dev libreadline-dev libsqlite3-dev curl \
+  libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
+  asdf install
+  # Install uv
+  curl -LsSf https://astral.sh/uv/install.sh | sh
+  echo "run 'source ~/.bashrc' to init asdf in the current shell"
+}
+
+run_download.models() {
+  _with_dev_env
+
+  declare -A files=(
+    # ["checkpoints/sfd_face.pth"]="https://www.robots.ox.ac.uk/~vgg/software/lipsync/data/sfd_face.pth"
+  )
+
+  for file_path in "${!files[@]}"; do
+    url="${files[$file_path]}"
+    if [ ! -f "$file_path" ]; then
+      echo "Downloading $file_path"
+      mkdir -p "$(dirname "$file_path")"
+      wget -c -O "$file_path" "$url"
+    fi
+  done
+}
+
+run_slurm.train() {
+  CONFIG_PATH="${1:-scripts/config/exp1_64_clip.py}"
+  export CONFIG_PATH
+  bash scripts/slurm/submit_train.sh
+}
+
+run_slurm.build() {
+  echo "Building Docker image for SLURM..."
+  docker build -t isv-512a:latest .
+  echo "Docker image built successfully"
+}
+
+run_slurm.enroot() {
+  if [ -z "${ENROOT_PATH:-}" ]; then
+    echo "Error: ENROOT_PATH environment variable is not set"
+    exit 1
+  fi
+  
+  ENROOT_IMAGE_PATH=$ENROOT_PATH/$USER/images
+  mkdir -p "$ENROOT_IMAGE_PATH"
+  
+  echo "Creating enroot image from Docker..."
+  # First save Docker image to tar
+  docker save -o isv-512a.tar isv-512a:latest
+  
+  # Convert to enroot squash file
+  enroot import -o "$ENROOT_IMAGE_PATH/isv-512a.sqsh" docker://isv-512a:latest
+  
+  # Clean up tar file
+  rm -f isv-512a.tar
+  
+  echo "Enroot image created at: $ENROOT_IMAGE_PATH/isv-512a.sqsh"
+}
+
+fn_exists() { declare -F "$1" >/dev/null; }
+
+run() {
+  local cmd=$1
+  shift
+  local fn="run_$cmd"
+
+  if fn_exists $fn; then
+    $fn "${@}"
+  else
+    _with_dev_env
+    uv run "$cmd" "${@}"
+  fi
+}
+
+run "${@}"

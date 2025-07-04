@@ -1,0 +1,131 @@
+# Files and directories that can be safely deleted
+# Generated from analysis of train.py and project structure
+
+# Temporary training artifacts
+train.gif
+val_*.gif
+
+# Directories generated during training/development
+wandb/
+lightning_logs/
+results/
+__pycache__/
+*.egg-info/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Temporary directories
+temp/
+tmp/
+
+# Log files
+*.log
+*.out
+*.err
+
+# Checkpoint files (if you want to clean old checkpoints)
+# checkpoints/
+
+# Python cache files
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Jupyter notebook checkpoints
+.ipynb_checkpoints/
+
+# Build artifacts
+build/
+dist/
+*.tar
+
+# Virtual environment (if you need to recreate)
+# .venv/
+
+# Specific files that appear to be generated
+lipsync.egg-info/
+
+# Note: Be careful about deleting checkpoints/ directory as it may contain
+# important model weights. Only delete if you have backups or don't need them.
+
+# PYTHON FILES AND FOLDERS THAT CAN BE DELETED
+# (These are files tracked by git that can be safely removed)
+
+# Alternative/experimental training scripts (keep main train.py)
+scripts/dinet/train_dv.py
+scripts/dinet_adv/
+scripts/dinet_lp/
+scripts/dinet_lp_static/
+
+# Old config files (if you're using a specific one, keep that)
+scripts/dinet/config_256_video.py
+scripts/dinet/config_512_repeat.py
+scripts/dinet/config_512_repeat_2_rt.py
+scripts/dinet/config_512_v8_repeat3.py
+scripts/dinet/config_512_v10.py
+scripts/dinet/config_512_v11_repeat4.py
+scripts/dinet/config_768.py
+scripts/syncnet/config2.py
+
+# Unused/alternative model implementations
+lipsync/dinet/model_adv.py
+lipsync/dinet/ds_adv.py
+lipsync/dinet_lp/
+lipsync/dinet_lp_static/
+
+# Apps that might not be needed for training
+liveportrait_app.py
+live_portrait/app.py
+scripts/live_portrait/
+
+# Standalone utility scripts that might not be core
+scripts/free_gpu_memory.py
+repair_silences.py
+
+# Jupyter notebooks (development/exploration files)
+nbs/
+lipsync/best_weight_file.ipynb
+lipsync/hdtr/cropping.ipynb
+live_portrait/notebooks/
+
+# Unused modules/features
+lipsync/appearence_loss/
+lipsync/latentsync_ds/
+lipsync/hdtr/
+lipsync/create_ds/
+lipsync/silence_classifier/
+
+# Alternative evaluation scripts
+scripts/dinet/eval.py
+scripts/dinet_adv/eval.py
+scripts/syncnet/eval.py
+scripts/syncnet/convert.py
+
+# Complete live_portrait module (if not using)
+# live_portrait/
+
+# WARNING: Only delete these if you're sure they're not needed:
+# - Keep scripts/dinet/train.py (main training script)
+# - Keep scripts/dinet/config.py or config_512.py (your main config)
+# - Keep lipsync/dinet/model.py, discriminator.py, losses.py (core models)
+# - Keep lipsync/syncnet/ (if using sync loss)
+# - Keep lipsync/inference/ (for inference)
+# - Keep lipsync/identity_loss/ (if using identity loss)

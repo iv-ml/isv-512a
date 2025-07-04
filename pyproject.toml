@@ -1,0 +1,100 @@
+[project]
+name = "lipsync"
+version = "0.1.0"
+description = ""
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "torch>=2.5.1",
+    "safetensors>=0.4.5",
+    "prefetch-generator>=1.0.3",
+    "fastcore>=1.7.20",
+    "torchvision>=0.20.1",
+    "lightning>=2.4.0",
+    "mmengine>=0.10.5",
+    "lpips>=0.1.4",
+    "loguru>=0.7.2",
+    "wandb>=0.18.7",
+    "pandas>=2.2.3",
+    "typer>=0.13.1",
+    "seaborn>=0.13.2",
+    "transformers>=4.46.3",
+    "torchaudio>=2.5.1",
+    "einops>=0.8.0",
+    "llvmlite>=0.43.0",
+    "librosa>=0.10.2.post1",
+    "numpy==1.26.4",
+    "insightface>=0.7.3",
+    "mediapipe>=0.10.18",
+    "moviepy>=2.1.1",
+    "captum>=0.7.0",
+    "ultralytics>=8.3.43",
+    "dill>=0.3.7",
+    "albumentations>=1.4.10",
+    "timm>=1.0.7",
+    "rich>=13.7.1",
+    "lmdb>=1.4.1",
+    "imageio-ffmpeg>=0.5.1",
+    "gradio>=5.8.0",
+    "tyro>=0.9.2",
+    "gradio-i18n>=0.2.1",
+    "face-alignment>=1.4.1",
+    "gpuinfonv>=0.1.0",
+    "tabulate>=0.9.0",
+]
+
+[dependency-groups]
+dev = [
+    "ipykernel>=6.29.5",
+    "ruff>=0.8.0",
+    "jupyter>=1.1.1",
+    "pre-commit>=4.0.1",
+    "streamlit>=1.41.0",
+]
+
+[tool.uv]
+override-dependencies = [
+    "onnxruntime==1.17.0; sys_platform == 'darwin'",
+    "onnxruntime-gpu==1.17.1; sys_platform == 'linux' or sys_platform == 'win32'",
+]
+
+[tool.uv.sources]
+torch = [
+  { index = "pytorch-cpu", marker = "sys_platform != 'linux'" },
+  { index = "pytorch-cu128", marker = "sys_platform == 'linux'" },
+]
+torchvision = [
+  { index = "pytorch-cpu", marker = "sys_platform != 'linux'" },
+  { index = "pytorch-cu128", marker = "sys_platform == 'linux'" },
+]
+torchaudio = [
+  { index = "pytorch-cpu", marker = "sys_platform != 'linux'" },
+  { index = "pytorch-cu128", marker = "sys_platform == 'linux'" },
+]
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[[tool.uv.index]]
+name = "pytorch-cu128"
+url = "https://download.pytorch.org/whl/cu128"
+explicit = true
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["lipsync"]
+package-dir = {"" = "."}
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+select = ["F", "I"]
+
+[tool.ruff.lint.mccabe]
+max-complexity = 18

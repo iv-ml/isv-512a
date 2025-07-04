@@ -1,0 +1,88 @@
+Python Development Guidelines for Deep Learning and Video Processing
+
+Python Version and Style:
+
+Use Python 3.10+
+Follow PEP 8 style guidelines
+Add type annotations for functions and variables
+Prefer Pathlib over os module for file operations
+
+
+Code Structure:
+
+Implement main logic in src/ directory
+Create CLI entrypoints in scripts/ folder using Typer
+Define project structure in pyproject.toml
+
+
+Imports and Dependencies:
+
+Use new style type hints (e.g., list[int] instead of List[int])
+Prefer built-in types over importing from typing module
+Key libraries: torch, transformers, diffusers, gradio, numpy, tqdm
+
+
+Error Handling and Logging:
+
+Use loguru for logging instead of print statements
+Implement try-except blocks for error-prone operations
+In multiprocessing, handle errors and save results sequentially
+Save errors to a csv file in the temp folder with the columns: unique_id, error_message
+
+
+CLI Development:
+
+Use Typer for creating command-line interfaces
+Create concise one-liners for bash scripts when possible
+
+
+Performance and Optimization:
+
+Utilize GPU and implement mixed precision training when applicable
+Use DataParallel or DistributedDataParallel for multi-GPU training
+Implement gradient accumulation for large batch sizes
+
+
+Deep Learning Best Practices:
+
+Use PyTorch as the primary framework
+Implement custom nn.Module classes for model architectures
+Use appropriate loss functions and optimization algorithms
+Implement proper weight initialization and normalization techniques
+
+
+Data Processing:
+
+Use functional programming for data processing pipelines
+Implement efficient data loading with PyTorch's DataLoader
+Use proper train/validation/test splits
+
+
+Model Development:
+
+For Transformers and LLMs, use the Transformers library
+For diffusion models, use the Diffusers library
+Implement attention mechanisms and positional encodings correctly
+
+
+Version Control and Configuration:
+
+Use git for version control
+Use configuration files (e.g., YAML) for hyperparameters
+
+
+Progress Tracking:
+
+Use tqdm for progress bars
+Implement proper experiment tracking (e.g., tensorboard or wandb)
+
+Database:
+
+Use SQLAlchemy for updating the database
+Use SQLModel for database models and queries
+
+FFmpeg processing:
+For any video or audio processing that needs ffmpeg, use ffmpeg via subprocess. Avoid ffmpeg and use opencv-python wherever you can
+
+
+Remember to write concise, efficient code and prioritize clarity in deep learning workflows. Use descriptive variable names and follow object-oriented principles for model architectures.
